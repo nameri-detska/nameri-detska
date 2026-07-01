@@ -18,14 +18,14 @@
 - **Icons:** Lucide React
 - **Theming:** next-themes (тъмен/светъл режим)
 - **Geocoding:** Nominatim (OpenStreetMap)
-- **Backend:** Java/Kotlin API (отделно хранилище)
+- **Backend:** Java 25 / Quarkus (същото монорепо)
 
 ## Първи Стъпки
 
 ### Предварителни Изисквания
 
 - Node.js 26+
-- Работещ [nameri-detska backend](https://github.com/nameri-detska/backend) (или задайте `NEXT_PUBLIC_BACKEND_URL` към деплойнат backend)
+- Работещ nameri-detska backend (виж [../backend/README.md](../backend/README.md)) или задайте `NEXT_PUBLIC_BACKEND_URL` към деплойнат backend
 
 ### Инсталация
 
@@ -68,7 +68,8 @@ docker run -p 3000:3000 -e NEXT_PUBLIC_BACKEND_URL=https://your-backend.example.
 │   ├── layout.tsx          # Основен layout (шрифтове, провайдъри, навигация)
 │   ├── page.tsx            # Начална страница
 │   ├── globals.css         # Глобални стилове, CSS променливи, MapLibre предефинирания
-│   ├── karta/page.tsx      # Карта с търсене
+│   ├── map/page.tsx        # Карта с търсене (основна)
+│   ├── karta/page.tsx      # Пренасочване към /map
 │   └── about/page.tsx      # За проекта (мотивация, източници на данни)
 ├── components/
 │   ├── landing-page.tsx    # Геолокация и навигационна логика
@@ -91,14 +92,6 @@ docker run -p 3000:3000 -e NEXT_PUBLIC_BACKEND_URL=https://your-backend.example.
 └── public/
     └── logo.svg
 ```
-
-## Източници на Данни
-
-- **Общински градини и ясли:** ИСОДЗ публичен REST API (`kg.sofia.bg`)
-- **Частни ясли регистрирани в СРЗИ:** PDF публикуван на ИСОДЗ (към 08.06.2026)
-- **Частни градини регистрирани в МОН:** Регистър на Министерството на образованието и науката
-- **Адресно геокодиране:** Nominatim (потребителски адреси), Google Maps Geocoding API (адреси на заведения, предварително изчислено)
-- **Изчисляване на разстояние:** Формула на Хаверсин (права линия)
 
 ## Лиценз
 

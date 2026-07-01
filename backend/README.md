@@ -29,9 +29,9 @@ src/main/java/com/nameri/detska/
 
 ## API
 
-### `POST /api/facilities`
+### `GET /api/facilities`
 
-Връща всички детски заведения. Отговорът се кешира за 5 минути.
+Връща всички детски заведения. Отговорът се кешира за 1 час.
 
 **Response** `200 OK`
 

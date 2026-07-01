@@ -78,12 +78,14 @@ nameri-detska/
 
 ## Източници на Данни
 
-| Източник | Тип |
-|---|---|
-| [ИСОДЗ](https://kg.sofia.bg) общински регистър | REST API |
-| Лицензирани частни ясли (СРЗИ) | PDF файл |
-| [МОН публичен регистър](https://ri-api.mon.bg) на частни градини | REST API |
-| Адресно геокодиране | Nominatim (потребители), Google Maps (заведения) |
+| Източник | Тип | Линк |
+|---|---|---|
+| [ИСОДЗ](https://kg.sofia.bg) общински регистър | REST API | [`kg.sofia.bg/api/public/kg/...`](https://kg.sofia.bg/api/public/kg/type/kinderGarden/all?filterType=by_region&kgType=0&regionId=0) |
+| Лицензирани частни ясли (СРЗИ) | PDF файл | [PDF](https://kg.sofia.bg/api/public/file/91f643b4bd6a4b179aaec3de09d028af) · [Източник: kg.sofia.bg/#/manual](https://kg.sofia.bg/#/manual) |
+| [МОН публичен регистър](https://ri-api.mon.bg) на частни градини | REST API | [`/public-register`](https://ri-api.mon.bg/data/get/public-register) + [`/institution`](https://ri-api.mon.bg/data/get/institution) |
+| Адресно геокодиране (потребители) | [Nominatim](https://nominatim.org/) (OpenStreetMap) | |
+| Адресно геокодиране (заведения) | [Google Maps Geocoding API](https://developers.google.com/maps/documentation/geocoding/overview) | |
+| Изчисляване на разстояния | [Haversine формула](https://en.wikipedia.org/wiki/Haversine_formula) | |
 
 ## Принос
 
