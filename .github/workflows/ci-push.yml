@@ -78,7 +78,7 @@ jobs:
         run: mvn package -Pnative -DskipTests -f backend/pom.xml "-Dquarkus.native.container-build=true" "-Dquarkus.native.builder-image=quay.io/quarkus/ubi9-quarkus-mandrel-builder-image:jdk-25"
 
       - name: Build and Push Backend Docker Image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v7
         with:
           context: backend
           file: backend/src/main/docker/Dockerfile.native
@@ -121,7 +121,7 @@ jobs:
           password: ${{ secrets.ARTIFACTORY_PUSH_KEY }}
 
       - name: Build and Push Frontend Docker Image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v7
         with:
           context: frontend
           platforms: linux/amd64
@@ -163,7 +163,7 @@ jobs:
           password: ${{ secrets.ARTIFACTORY_PUSH_KEY }}
 
       - name: Build and Push Syncer Docker Image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: syncer/src/main/docker/Dockerfile
