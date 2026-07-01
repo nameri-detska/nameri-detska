@@ -1,19 +1,21 @@
 # Намери Детска — Backend
 
-REST API backend за **[nameri-detska.com](https://nameri-detska.com)**, уеб приложение, което помага на българските родители да намират детски заведения — градини, ясли и обединени заведения. Изграден с **Quarkus**, компилиран до **native binary** чрез GraalVM/Mandrel и деплойнат на **Google Cloud Run**.
+REST API backend за **[nameri-detska.com](https://nameri-detska.com)**, уеб приложение, което помага на българските
+родители да намират детски заведения — градини, ясли и обединени заведения. Изграден с **Quarkus**, компилиран до *
+*native binary** чрез GraalVM/Mandrel и деплойнат на **Google Cloud Run**.
 
 ## Технологичен Стак
 
-|              |                                       |
-| ------------ | ------------------------------------- |
-| Език         | Java 25                               |
-| Framework    | Quarkus 3.36.1                        |
-| База данни   | PostgreSQL (JDBC)                     |
-| Build Tool   | Maven                                 |
-| Контейнер    | Docker + UBI9 minimal image           |
-| CI/CD        | GitHub Actions → Google Cloud Run     |
-| Code Gen     | Lombok                                |
-| Форматиране  | Spotless + Eclipse formatter          |
+|             |                                   |
+|-------------|-----------------------------------|
+| Език        | Java 25                           |
+| Framework   | Quarkus 3.36.1                    |
+| База данни  | PostgreSQL (JDBC)                 |
+| Build Tool  | Maven                             |
+| Контейнер   | Docker + UBI9 minimal image       |
+| CI/CD       | GitHub Actions → Google Cloud Run |
+| Code Gen    | Lombok                            |
+| Форматиране | Spotless + Eclipse formatter      |
 
 ## Структура на Проекта
 
@@ -49,14 +51,14 @@ src/main/java/com/nameri/detska/
 ]
 ```
 
-| Enum стойност                | Български еквивалент   |
-| ---------------------------- |-----------------------|
-| `KINDERGARTEN`               | Детска градина        |
-| `KINDERGARTEN_WITH_NURSERY`  | Детска градина с ясла |
-| `NURSERY`                    | Ясла                  |
-| `MUNICIPAL`                  | Общинска              |
-| `PRIVATE_SRZI`               | Частна ясла (СРЗИ)    |
-| `PRIVATE_MON`                | Частна градина (МОН)  |
+| Enum стойност               | Български еквивалент  |
+|-----------------------------|-----------------------|
+| `KINDERGARTEN`              | Детска градина        |
+| `KINDERGARTEN_WITH_NURSERY` | Детска градина с ясла |
+| `NURSERY`                   | Ясла                  |
+| `MUNICIPAL`                 | Общинска              |
+| `PRIVATE_SRZI`              | Частна ясла (СРЗИ)    |
+| `PRIVATE_MON`               | Частна градина (МОН)  |
 
 ## Първи Стъпки
 
@@ -72,14 +74,15 @@ src/main/java/com/nameri/detska/
 Създайте таблица `kid_facility` във вашата PostgreSQL база данни:
 
 ```sql
-CREATE TABLE kid_facility (
-    id UUID PRIMARY KEY,
-    name TEXT NOT NULL,
-    kid_facility_type TEXT NOT NULL,
+CREATE TABLE kid_facility
+(
+    id                          UUID PRIMARY KEY,
+    name                        TEXT NOT NULL,
+    kid_facility_type           TEXT NOT NULL,
     kid_facility_ownership_type TEXT NOT NULL,
-    address TEXT,
-    latitude DOUBLE PRECISION,
-    longitude DOUBLE PRECISION
+    address                     TEXT,
+    latitude                    DOUBLE PRECISION,
+    longitude                   DOUBLE PRECISION
 );
 ```
 
@@ -132,15 +135,19 @@ docker run -p 8080:8080 \
 mvn spotless:apply
 ```
 
-База данни идентификационни данни, CORS origins за staging и друга специфична за средата конфигурация трябва да се предоставят чрез environment променливи по време на изпълнение. Виж [Quarkus configuration reference](https://quarkus.io/guides/config-reference).
+База данни идентификационни данни, CORS origins за staging и друга специфична за средата конфигурация трябва да се
+предоставят чрез environment променливи по време на изпълнение.
+Виж [Quarkus configuration reference](https://quarkus.io/guides/config-reference).
 
 ## Принос
 
 1. Форкнете хранилището
-2. Стартирайте `mvn spotless:apply` преди къмитване, за да сте сигурни, че форматирането на кода отговаря на стила на проекта
+2. Стартирайте `mvn spotless:apply` преди къмитване, за да сте сигурни, че форматирането на кода отговаря на стила на
+   проекта
 3. Отворете pull request към `main`
 
-Правилата за подредба на импорти и форматиране са дефинирани в `.formatter/nameri-detska-formatter.xml` и `.formatter/nameri-detska.importorder`.
+Правилата за подредба на импорти и форматиране са дефинирани в `.formatter/nameri-detska-formatter.xml` и
+`.formatter/nameri-detska.importorder`.
 
 ## Лиценз
 
