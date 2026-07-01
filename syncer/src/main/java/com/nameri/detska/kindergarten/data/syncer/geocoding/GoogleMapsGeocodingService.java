@@ -110,6 +110,15 @@ public class GoogleMapsGeocodingService implements GeocodingService {
             }
         }
 
+        String latinAlt = latin.replace("iya", "ia");
+        if (!latinAlt.equals(latin)) {
+            for (JsonNode result : results) {
+                if (resultContainsLocality(result, latinAlt)) {
+                    return result;
+                }
+            }
+        }
+
         for (JsonNode result : results) {
             String locality = extractResultLocality(result);
             if (locality != null && !"Sofia".equalsIgnoreCase(locality)) {
