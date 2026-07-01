@@ -13,29 +13,16 @@
 
 ## Архитектура
 
-```
-┌──────────┬──────────────────────────────────────┐
-│  syncer  │  ETL pipeline (еднократно)           │
-│  Java 25 │  Извлича → Геокодира → Записва       │
-│ Quarkus  │  Източници: ИСОДЗ API, СРЗИ PDF, МОН │
-└────┬─────┴──────────────────┬───────────────────┘
-     │                        │
-     ▼                        ▼
-┌─────────┐           ┌──────────────┐
-│PostgreSQL│◄──────────│   backend    │
-│         │  JDBC     │  Java 25     │
-└─────────┘           │  Quarkus     │
-                      │  GET /api/   │
-                      │  facilities  │
-                      └──────┬───────┘
-                             │  JSON
-                             ▼
-                      ┌──────────────┐
-                      │   frontend   │
-                      │  Next.js 16  │
-                      │  TypeScript  │
-                      │  MapLibre GL │
-                      └──────────────┘
+```mermaid
+flowchart LR
+    frontend["frontend<br/>Next.js 16 · TypeScript<br/>MapLibre GL"]
+    backend["backend<br/>Java 25 · Quarkus<br/>REST API"]
+    pg[("PostgreSQL")]
+    syncer["syncer<br/>Java 25 · Quarkus<br/>ETL pipeline"]
+
+    frontend --> backend
+    backend --> pg
+    syncer --> pg
 ```
 
 - **syncer** — Събира данни за заведения от три български държавни източника, извлича данни от PDF чрез Gemini AI, геокодира адреси чрез Google Maps и записва в PostgreSQL.
