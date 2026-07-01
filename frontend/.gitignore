@@ -1,0 +1,10 @@
+node_modules/
+.next/
+out/
+.env*.local
+.env.development
+.env.production
+.DS_Store
+Thumbs.db
+*.tsbuildinfo
+.idea

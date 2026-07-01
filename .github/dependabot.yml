@@ -1,0 +1,14 @@
+version: 2
+updates:
+  - package-ecosystem: "maven"
+    directory: "/backend"
+    schedule:
+      interval: "weekly"
+      day: sunday
+    target-branch: "main"
+  - package-ecosystem: "maven"
+    directory: "/syncer"
+    schedule:
+      interval: "weekly"
+      day: sunday
+    target-branch: "main"
