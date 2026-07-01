@@ -1,52 +1,45 @@
-# nameri-detska frontend
+# Намери Детска — Frontend
 
-Purely vibe-coded with [OpenCode](https://opencode.ai). Find kindergartens and nurseries near you in Sofia, Bulgaria —
-sorted by distance, with an interactive map.
+Изцяло vibe-coded с [OpenCode](https://opencode.ai). Намерете детски градини и ясли близо до вас в София — сортирани по разстояние, с интерактивна карта.
 
-## Motivation
+## Мотивация
 
-As a parent in Sofia, I received an email that my child was not accepted at first classification. I started searching
-for a private SRZI-registered nursery and found the process needlessly complex — the official ISODZ system is hard to
-navigate, the list of registered private nurseries is buried in a PDF, and there is no way to sort facilities by
-proximity.
+Като родител в София получих имейл, че детето ми не е прието на първо класиране. Започнах да търся частна ясла, регистрирана в СРЗИ, и установих, че процесът е ненужно сложен — официалната система ИСОДЗ е трудна за навигация, списъкът с регистрирани частни ясли е заровен в PDF, а няма начин да сортирате заведенията по близост.
 
-This project is a quick demonstration of a better experience: search by address or location, see all facilities on a
-map, and sort them by how close they are to you. The hope is that ISODZ adopts these improvements and this site can be
-shut down for good.
+Този проект е бърза демонстрация на по-добро решение: търсене по адрес или локация, всички заведения на карта и сортиране по това колко са близо до вас. Надяваме се, че ИСОДЗ ще възприеме тези подобрения и този сайт ще може да бъде спрян за постоянно.
 
-## Tech Stack
+## Технологичен Стак
 
 - **Framework:** Next.js 16 (App Router)
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS v4
 - **Data Fetching:** TanStack React Query
-- **Maps:** MapLibre GL (OpenStreetMap tiles)
+- **Maps:** MapLibre GL (OpenStreetMap тайлове)
 - **Icons:** Lucide React
-- **Theming:** next-themes (dark/light mode)
+- **Theming:** next-themes (тъмен/светъл режим)
 - **Geocoding:** Nominatim (OpenStreetMap)
-- **Backend:** Java/Kotlin API (separate repository)
+- **Backend:** Java/Kotlin API (отделно хранилище)
 
-## Getting Started
+## Първи Стъпки
 
-### Prerequisites
+### Предварителни Изисквания
 
 - Node.js 26+
-- A running instance of the [nameri-detska backend](https://github.com/nameri-detska/backend) (or set
-  `NEXT_PUBLIC_BACKEND_URL` to a deployed backend)
+- Работещ [nameri-detska backend](https://github.com/nameri-detska/backend) (или задайте `NEXT_PUBLIC_BACKEND_URL` към деплойнат backend)
 
-### Installation
+### Инсталация
 
 ```bash
 npm install
 ```
 
-### Development
+### Разработка
 
 ```bash
 npm run dev
 ```
 
-The app runs at [http://localhost:3000](http://localhost:3000).
+Приложението работи на [http://localhost:3000](http://localhost:3000).
 
 ### Production Build
 
@@ -64,49 +57,49 @@ docker run -p 3000:3000 -e NEXT_PUBLIC_BACKEND_URL=https://your-backend.example.
 
 ## Environment Variables
 
-| Variable                  | Default                 | Description                   |
-|---------------------------|-------------------------|-------------------------------|
-| `NEXT_PUBLIC_BACKEND_URL` | `http://localhost:8080` | URL of the backend API server |
+| Променлива                | Стойност по Подразбиране | Описание                           |
+|---------------------------|-------------------------|------------------------------------|
+| `NEXT_PUBLIC_BACKEND_URL` | `http://localhost:8080` | URL на backend API сървъра         |
 
-## Project Structure
+## Структура на Проекта
 
 ```
 ├── app/
-│   ├── layout.tsx          # Root layout (fonts, providers, navbar)
-│   ├── page.tsx            # Landing page
-│   ├── globals.css         # Global styles, CSS variables, MapLibre overrides
-│   ├── karta/page.tsx      # Map page with search
-│   └── about/page.tsx      # About the project (motivation, data sources)
+│   ├── layout.tsx          # Основен layout (шрифтове, провайдъри, навигация)
+│   ├── page.tsx            # Начална страница
+│   ├── globals.css         # Глобални стилове, CSS променливи, MapLibre предефинирания
+│   ├── karta/page.tsx      # Карта с търсене
+│   └── about/page.tsx      # За проекта (мотивация, източници на данни)
 ├── components/
-│   ├── landing-page.tsx    # Geolocation & navigation logic
-│   ├── landing-hero.tsx    # Hero section with location search
-│   ├── map-page.tsx        # Main search + map + list layout
-│   ├── facility-map.tsx    # MapLibre GL map with custom SVG pins
-│   ├── facility-list.tsx   # Sortable, filterable facility list
-│   ├── theme-provider.tsx  # next-themes wrapper
-│   ├── theme-switcher.tsx  # Light/dark toggle
+│   ├── landing-page.tsx    # Геолокация и навигационна логика
+│   ├── landing-hero.tsx    # Hero секция с търсене по локация
+│   ├── map-page.tsx        # Основен компонент: търсене + карта + списък
+│   ├── facility-map.tsx    # MapLibre GL карта с персонализирани SVG пинове
+│   ├── facility-list.tsx   # Сортиращ и филтриращ списък със заведения
+│   ├── theme-provider.tsx  # next-themes обвивка
+│   ├── theme-switcher.tsx  # Превключване светъл/тъмен режим
 │   ├── react-query-provider.tsx
-│   └── navbar/             # Desktop & mobile nav components
+│   └── navbar/             # Desktop & mobile навигационни компоненти
 ├── hooks/
-│   └── use-facilities.ts   # React Query hooks for facility data
+│   └── use-facilities.ts   # React Query hooks за данни за заведения
 ├── lib/
-│   ├── api-client.ts       # Backend API client
-│   ├── geocode.ts          # Nominatim address geocoding
-│   └── utils.ts            # CSS class merging, formatting helpers
+│   ├── api-client.ts       # Backend API клиент
+│   ├── geocode.ts          # Nominatim адресно геокодиране
+│   └── utils.ts            # CSS class merging, форматиращи помощни функции
 ├── types/
-│   └── facility.ts         # TypeScript interfaces
+│   └── facility.ts         # TypeScript интерфейси
 └── public/
     └── logo.svg
 ```
 
-## Data Sources
+## Източници на Данни
 
-- **Municipal kindergartens & nurseries:** ISODZ public REST API (`kg.sofia.bg`)
-- **Private SRZI-registered nurseries:** PDF published on ISODZ (as of 08.06.2026)
-- **Private MON-registered kindergartens:** Registry of the Ministry of Education and Science
-- **Address geocoding:** Nominatim (user addresses), Google Maps Geocoding API (facility addresses, pre-computed)
-- **Distance calculation:** Haversine formula (straight-line)
+- **Общински градини и ясли:** ИСОДЗ публичен REST API (`kg.sofia.bg`)
+- **Частни ясли регистрирани в СРЗИ:** PDF публикуван на ИСОДЗ (към 08.06.2026)
+- **Частни градини регистрирани в МОН:** Регистър на Министерството на образованието и науката
+- **Адресно геокодиране:** Nominatim (потребителски адреси), Google Maps Geocoding API (адреси на заведения, предварително изчислено)
+- **Изчисляване на разстояние:** Формула на Хаверсин (права линия)
 
-## License
+## Лиценз
 
 MIT

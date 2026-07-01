@@ -1,23 +1,23 @@
-# Nameri Detska (Намери Детска)
+# Намери Детска
 
 [![CI](https://github.com/nameri-detska/nameri-detska/actions/workflows/ci-push.yml/badge.svg)](https://github.com/nameri-detska/nameri-detska/actions/workflows/ci-push.yml)
 ![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 
-Find kindergartens and nurseries near you in Sofia, Bulgaria — sorted by distance, with an interactive map.
+Намерете детски градини и ясли близо до вас в София — сортирани по разстояние, с интерактивна карта.
 
-Live at **[nameri-detska.com](https://nameri-detska.com)**
+На живо на **[nameri-detska.com](https://nameri-detska.com)**
 
-## Motivation
+## Мотивация
 
-As a parent in Sofia, I received an email that my child was not accepted at first classification. Searching for alternatives was unnecessarily complex: the official ISODZ system is hard to navigate, the list of registered private nurseries is buried in a PDF, and there is no way to sort facilities by proximity. This project demonstrates a better experience. The hope is that ISODZ adopts these improvements so this site can be shut down for good.
+Като родител в София получих имейл, че детето ми не е прието на първо класиране. Търсенето на алтернативи беше ненужно сложно: официалната система ИСОДЗ е трудна за навигация, списъкът с регистрирани частни ясли е заровен в PDF, а няма начин да сортирате заведенията по близост. Този проект демонстрира по-добро решение. Надяваме се, че ИСОДЗ ще възприеме тези подобрения и този сайт ще може да бъде спрян за постоянно.
 
-## Architecture
+## Архитектура
 
 ```
 ┌──────────┬──────────────────────────────────────┐
-│  syncer  │  ETL pipeline (one-shot)             │
-│  Java 25 │  Ingests → Geocodes → Persists data  │
-│ Quarkus  │  Sources: ISODZ API, SRZI PDF, MON   │
+│  syncer  │  ETL pipeline (еднократно)           │
+│  Java 25 │  Извлича → Геокодира → Записва       │
+│ Quarkus  │  Източници: ИСОДЗ API, СРЗИ PDF, МОН │
 └────┬─────┴──────────────────┬───────────────────┘
      │                        │
      ▼                        ▼
@@ -38,13 +38,13 @@ As a parent in Sofia, I received an email that my child was not accepted at firs
                       └──────────────┘
 ```
 
-- **syncer** — Collects facility data from three Bulgarian government sources, parses PDFs with Gemini AI, geocodes addresses via Google Maps, and writes to PostgreSQL.
-- **backend** — Quarkus REST API serving geocoded facility data with 1-hour caching.
-- **frontend** — Next.js web app with interactive map, location search, filtering by type/ownership, and distance-based sorting.
+- **syncer** — Събира данни за заведения от три български държавни източника, извлича данни от PDF чрез Gemini AI, геокодира адреси чрез Google Maps и записва в PostgreSQL.
+- **backend** — Quarkus REST API, обслужващо геокодирани данни за заведения с 1-часово кеширане.
+- **frontend** — Next.js уеб приложение с интерактивна карта, търсене по адрес, филтриране по тип/собственост и сортиране по разстояние.
 
-## Tech Stack
+## Технологичен Стак
 
-| Layer | Technology |
+| Слой | Технология |
 |---|---|
 | Frontend | Next.js 16, React 19, TypeScript, Tailwind CSS v4, MapLibre GL, TanStack React Query |
 | Backend | Java 25, Quarkus, PostgreSQL (JDBC), GraalVM native image |
@@ -52,60 +52,60 @@ As a parent in Sofia, I received an email that my child was not accepted at firs
 | CI/CD | GitHub Actions, Google Cloud Run, Artifact Registry |
 | Build | Maven (Java), npm workspaces (frontend) |
 
-## Getting Started
+## Първи Стъпки
 
-### Prerequisites
+### Предварителни Изисквания
 
 - **Node.js 26+** (frontend)
 - **JDK 25** (backend & syncer)
 - **PostgreSQL** (backend & syncer)
 - **Maven 3.9+** (Java builds)
-- **Google Maps API key** (syncer geocoding)
-- **Google Gemini API key** (syncer PDF parsing)
+- **Google Maps API ключ** (syncer геокодиране)
+- **Google Gemini API ключ** (syncer извличане от PDF)
 
-### Running everything locally
+### Локално стартиране
 
-1. **Set up PostgreSQL** — create a database and the `kid_facility` table (see [backend/README.md](backend/README.md#database-setup)).
-2. **Populate data** — run the syncer to fetch and geocode facility data (see [syncer/README.md](syncer/README.md)).
-3. **Start the backend** — `cd backend && mvn quarkus:dev` (runs on port 8080).
-4. **Start the frontend** — `cd frontend && npm run dev` (runs on port 3000).
+1. **Настройка на PostgreSQL** — създайте база данни и таблица `kid_facility` (виж [backend/README.md](backend/README.md#database-setup)).
+2. **Зареждане на данни** — стартирайте syncer за извличане и геокодиране на данните (виж [syncer/README.md](syncer/README.md)).
+3. **Стартиране на backend** — `cd backend && mvn quarkus:dev` (работи на порт 8080).
+4. **Стартиране на frontend** — `cd frontend && npm run dev` (работи на порт 3000).
 
-Open [http://localhost:3000](http://localhost:3000).
+Отворете [http://localhost:3000](http://localhost:3000).
 
 ### Docker
 
-Each component has its own Dockerfile. See the per-component READMEs for instructions.
+Всеки компонент има собствен Dockerfile. Виж README файловете на отделните компоненти за инструкции.
 
-## Project Structure
+## Структура на Проекта
 
 ```
 nameri-detska/
-├── frontend/        # Next.js 16 web app
+├── frontend/        # Next.js 16 уеб приложение
 ├── backend/         # Quarkus REST API
-├── syncer/          # ETL data pipeline
+├── syncer/          # ETL pipeline за данни
 ├── .github/         # CI/CD workflows & Dependabot
-├── .formatter/      # Java code style (shared)
+├── .formatter/      # Java кодови конвенции (споделени)
 ├── package.json     # npm workspace root
-└── pom.xml          # Maven parent POM
+└── pom.xml          # Maven родителски POM
 ```
 
-## Data Sources
+## Източници на Данни
 
-| Source | Type |
+| Източник | Тип |
 |---|---|
-| [ISODZ](https://kg.sofia.bg) municipal registry | REST API |
-| Licensed private nurseries (SRZI) | PDF download |
-| [MON public register](https://ri-api.mon.bg) of private kindergartens | REST API |
-| Address geocoding | Nominatim (user), Google Maps (facilities) |
+| [ИСОДЗ](https://kg.sofia.bg) общински регистър | REST API |
+| Лицензирани частни ясли (СРЗИ) | PDF файл |
+| [МОН публичен регистър](https://ri-api.mon.bg) на частни градини | REST API |
+| Адресно геокодиране | Nominatim (потребители), Google Maps (заведения) |
 
-## Contributing
+## Принос
 
-1. Fork the repository
-2. Run `mvn spotless:apply` before committing Java changes to match the project's code style
-3. Open a pull request against `main`
+1. Форкнете хранилището
+2. Стартирайте `mvn spotless:apply` преди къмитване на Java промени, за да отговарят на кодовия стил на проекта
+3. Отворете pull request към `main`
 
-Code formatting rules are in `.formatter/`.
+Правилата за форматиране на кода са в `.formatter/`.
 
-## License
+## Лиценз
 
-MIT — see each component's README for details.
+MIT — виж README на всеки компонент за детайли.
