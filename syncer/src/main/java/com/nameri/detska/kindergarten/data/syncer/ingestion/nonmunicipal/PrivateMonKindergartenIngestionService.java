@@ -94,12 +94,14 @@ public class PrivateMonKindergartenIngestionService implements KidFacilityIngest
 
     private InstitutionDetail fetchDetail(PublicInstitution institution) {
         try {
-            String body = String.format("""
-                {
-                    "instid": "%s",
-                    "procID": "%s"
-                }
-                """, institution.instid(), institution.procID());
+            String body = String.format(
+                """
+                    {
+                        "instid": "%s",
+                        "procID": "%s"
+                    }
+                    """, institution.instid(), institution.procID()
+            );
 
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(detailUrl))

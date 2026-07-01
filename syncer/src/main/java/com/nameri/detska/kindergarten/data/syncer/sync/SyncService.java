@@ -51,7 +51,7 @@ public class SyncService {
 
     private static String cleanAddress(String address) {
         return address
-            .replaceAll("\\bдо\\b\\s*", "")
+            .replaceAll("(?U)\\bдо\\b\\s*", "")
             .trim();
     }
 

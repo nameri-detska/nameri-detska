@@ -59,10 +59,12 @@ public class ManualFacilityOverrideService {
                 switch (type) {
                     case "coordinates":
                         String[] coords = value.split(",");
-                        coordinatesOverrides.put(key, new double[]{
-                            Double.parseDouble(coords[0].trim()),
-                            Double.parseDouble(coords[1].trim())
-                        });
+                        coordinatesOverrides.put(
+                            key, new double[]{
+                                Double.parseDouble(coords[0].trim()),
+                                Double.parseDouble(coords[1].trim())
+                            }
+                        );
                         break;
                     case "address":
                         addressesOverrides.put(key, value);
@@ -72,8 +74,10 @@ public class ManualFacilityOverrideService {
                 }
             }
 
-            log.info("Loaded {} coordinates and {} address overrides from '{}'",
-                coordinatesOverrides.size(), addressesOverrides.size(), OVERRIDES_FILEPATH);
+            log.info(
+                "Loaded {} coordinates and {} address overrides from '{}'",
+                coordinatesOverrides.size(), addressesOverrides.size(), OVERRIDES_FILEPATH
+            );
         } catch (IOException e) {
             log.error("Failed to read overrides file '{}'", OVERRIDES_FILEPATH, e);
         }
