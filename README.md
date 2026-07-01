@@ -37,7 +37,7 @@ flowchart LR
 | Backend | Java 25, Quarkus, PostgreSQL (JDBC), GraalVM native image |
 | ETL | Java 25, Quarkus, Hibernate + Panache, LangChain4j Gemini, PDFBox, Google Maps API |
 | CI/CD | GitHub Actions, Google Cloud Run, Artifact Registry |
-| Build | Maven (Java), npm workspaces (frontend) |
+| Build | Maven (Java), npm (frontend) |
 
 ## Първи Стъпки
 
@@ -72,7 +72,6 @@ nameri-detska/
 ├── syncer/          # ETL pipeline за данни
 ├── .github/         # CI/CD workflows & Dependabot
 ├── .formatter/      # Java кодови конвенции (споделени)
-├── package.json     # npm workspace root
 └── pom.xml          # Maven родителски POM
 ```
 
