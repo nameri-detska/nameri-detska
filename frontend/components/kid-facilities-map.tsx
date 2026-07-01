@@ -1,6 +1,7 @@
 "use client";
 
 import { useFacilities } from "@/hooks/use-facilities";
+import { useGeolocation } from "@/hooks/use-geolocation";
 import type { Facility, SearchFilters } from "@/types/facility";
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
@@ -36,8 +37,7 @@ export function KidFacilitiesMap() {
     setHasSearched(true);
   }, []);
   const [searchAddress, setSearchAddress] = useState<string | undefined>(initialAddress);
-  const [locating, setLocating] = useState(false);
-  const [locationError, setLocationError] = useState<string | null>(null);
+  const { locating, error: locationError, requestLocation } = useGeolocation();
   const [address, setAddress] = useState(initialAddress ?? "");
 
   const [filters, setFilters] = useState<SearchFilters>({
@@ -108,30 +108,16 @@ export function KidFacilitiesMap() {
   const hasFilters = filters.kidFacilityTypes.length > 0 || filters.kidFacilityOwnershipTypes.length > 0;
   const locationLabel = searchAddress ?? (userLocation ? "Вашето местоположение" : undefined);
 
-  const handleLocate = useCallback(() => {
-    setLocating(true);
-    setLocationError(null);
-    if (!navigator.geolocation) {
-      setLocationError("Браузърът не поддържа геолокация.");
-      setLocating(false);
-      return;
+  const handleLocate = useCallback(async () => {
+    const pos = await requestLocation();
+    if (pos) {
+      setUserLocation({ latitude: pos.latitude, longitude: pos.longitude });
+      setSearchAddress(undefined);
+      setHasSearched(true);
+      setDisplayCount(10);
+      setShowAllRequested(false);
     }
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setUserLocation({ latitude: pos.coords.latitude, longitude: pos.coords.longitude });
-        setSearchAddress(undefined);
-        setLocating(false);
-        setHasSearched(true);
-        setDisplayCount(10);
-        setShowAllRequested(false);
-      },
-      (err) => {
-        setLocationError(err.code === err.PERMISSION_DENIED ? "Достъпът до местоположение е отказан." : "Не можахме да определим местоположението.");
-        setLocating(false);
-      },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 300000 }
-    );
-  }, []);
+  }, [requestLocation]);
 
   const handleSearch = useCallback(async () => {
     if (!address.trim()) return;
