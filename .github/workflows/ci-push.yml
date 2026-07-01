@@ -1,0 +1,175 @@
+name: ci-push
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      frontend:
+        description: 'Deploy frontend'
+        type: boolean
+        default: false
+      backend:
+        description: 'Deploy backend'
+        type: boolean
+        default: false
+      syncer:
+        description: 'Deploy syncer'
+        type: boolean
+        default: false
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      frontend: ${{ steps.filter.outputs.frontend }}
+      backend: ${{ steps.filter.outputs.backend }}
+      syncer: ${{ steps.filter.outputs.syncer }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check changed paths
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            frontend:
+              - 'frontend/**'
+              - 'package.json'
+            backend:
+              - 'backend/**'
+              - 'pom.xml'
+              - '.formatter/**'
+            syncer:
+              - 'syncer/**'
+              - 'pom.xml'
+              - '.formatter/**'
+
+  backend:
+    needs: changes
+    if: needs.changes.outputs.backend == 'true' || (github.event_name == 'workflow_dispatch' && github.event.inputs.backend == 'true')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set Up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 25
+          cache: 'maven'
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Authenticate with Google Artifact Registry
+        uses: docker/login-action@v3
+        with:
+          registry: europe-west1-docker.pkg.dev
+          username: _json_key
+          password: ${{ secrets.ARTIFACTORY_PUSH_KEY }}
+
+      - name: Build Quarkus Native Binary
+        run: mvn package -Pnative -DskipTests -f backend/pom.xml "-Dquarkus.native.container-build=true" "-Dquarkus.native.builder-image=quay.io/quarkus/ubi9-quarkus-mandrel-builder-image:jdk-25"
+
+      - name: Build and Push Backend Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: backend
+          file: backend/src/main/docker/Dockerfile.native
+          platforms: linux/amd64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: false
+          push: true
+          tags: europe-west1-docker.pkg.dev/nameri-detska/nameri-detska/backend:main
+
+      - name: Authenticate with Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.DEPLOYER_KEY }}
+
+      - name: Deploy Backend to Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          image: europe-west1-docker.pkg.dev/nameri-detska/nameri-detska/backend:main
+          service: backend
+          region: europe-west1
+
+  frontend:
+    needs: changes
+    if: needs.changes.outputs.frontend == 'true' || (github.event_name == 'workflow_dispatch' && github.event.inputs.frontend == 'true')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Authenticate with Google Artifact Registry
+        uses: docker/login-action@v3
+        with:
+          registry: europe-west1-docker.pkg.dev
+          username: _json_key
+          password: ${{ secrets.ARTIFACTORY_PUSH_KEY }}
+
+      - name: Build and Push Frontend Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: frontend
+          platforms: linux/amd64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: false
+          push: true
+          tags: europe-west1-docker.pkg.dev/nameri-detska/nameri-detska/frontend:main
+
+      - name: Authenticate with Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.DEPLOYER_KEY }}
+
+      - name: Deploy Frontend to Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          image: europe-west1-docker.pkg.dev/nameri-detska/nameri-detska/frontend:main
+          service: frontend
+          region: europe-west1
+
+  syncer:
+    needs: changes
+    if: needs.changes.outputs.syncer == 'true' || (github.event_name == 'workflow_dispatch' && github.event.inputs.syncer == 'true')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Authenticate with Google Artifact Registry
+        uses: docker/login-action@v3
+        with:
+          registry: europe-west1-docker.pkg.dev
+          username: _json_key
+          password: ${{ secrets.ARTIFACTORY_PUSH_KEY }}
+
+      - name: Build and Push Syncer Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: syncer/src/main/docker/Dockerfile
+          platforms: linux/amd64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: false
+          push: true
+          tags: europe-west1-docker.pkg.dev/nameri-detska/nameri-detska/syncer:main

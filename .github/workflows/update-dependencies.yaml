@@ -1,0 +1,51 @@
+name: Update Dependencies
+
+on:
+  schedule:
+    - cron: "0 0 * * SUN"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  update-dependencies:
+    permissions:
+      contents: write
+      pull-requests: write
+    name: Update packages
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "26.3.0"
+
+      - name: Install "npm-check-updates"
+        run: npm install -g npm-check-updates
+
+      - name: Update packages
+        working-directory: frontend
+        run: ncu --upgrade --reject unfetch --reject @rollup/plugin-commonjs
+
+      - name: Install them and update "package-lock.json"
+        working-directory: frontend
+        run: npm install --legacy-peer-deps
+
+      - name: Build files with newer dependencies
+        working-directory: frontend
+        run: npm run build
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.ACTIONS_TOKEN }}
+          add-paths: frontend/package*.json
+          title: "chore: Weekly Update Dependencies"
+          body: "chore: Weekly Update Dependencies"
+          commit-message: "chore: Weekly Update Dependencies"
+          delete-branch: true
+          branch: update-dependencies

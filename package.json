@@ -1,0 +1,13 @@
+{
+  "name": "nameri-detska",
+  "private": true,
+  "scripts": {
+    "dev": "npm run dev -w frontend",
+    "build": "npm run build -w frontend && mvn package -f backend/pom.xml && mvn package -f syncer/pom.xml",
+    "lint": "npm run lint -w frontend && mvn spotless:check -f backend/pom.xml && mvn spotless:check -f syncer/pom.xml",
+    "format": "npm run lint -w frontend -- --fix && mvn spotless:apply -f backend/pom.xml && mvn spotless:apply -f syncer/pom.xml"
+  },
+  "workspaces": [
+    "frontend"
+  ]
+}
