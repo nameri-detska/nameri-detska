@@ -46,7 +46,7 @@ export default function DesktopNavbar() {
         <div className="flex flex-1 items-center justify-end gap-2">
           <ThemeSwitcher />
           <a
-            href="https://github.com/nameri-detska"
+            href="https://github.com/nameri-detska/nameri-detska"
             target="_blank"
             rel="noopener noreferrer"
             className="flex size-10 items-center justify-center rounded-xl border border-[var(--border)] bg-white/80 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700 hover:shadow-sm active:scale-95 transition-all duration-200"
