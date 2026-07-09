@@ -6,7 +6,6 @@ import { searchFacilities } from "@/lib/api-client";
 import { ReactQueryProvider } from "@/components/react-query-provider";
 import { MyThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/navbar/navbar";
-import AdSense from "@/components/common/ad-sense";
 
 const inter = Inter({
   subsets: ["cyrillic", "latin"],
@@ -48,7 +47,6 @@ export default async function RootLayout({children}: { children: React.ReactNode
             </MyThemeProvider>
           </HydrationBoundary>
         </ReactQueryProvider>
-        <AdSense pId="8051089881113364" />
       </body>
     </html>
   );
