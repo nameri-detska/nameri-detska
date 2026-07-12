@@ -14,7 +14,7 @@
   <packaging>jar</packaging>
 
   <properties>
-    <pdfbox.version>3.0.7</pdfbox.version>
+    <pdfbox.version>3.0.8</pdfbox.version>
     <quarkus-langchain4j.version>1.11.2</quarkus-langchain4j.version>
   </properties>
 
