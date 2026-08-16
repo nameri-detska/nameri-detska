@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef } from "react";
 import { createRoot } from "react-dom/client";
 import { Move } from "lucide-react";
-import maplibregl, { type StyleSpecification } from "maplibre-gl";
+import { Map as MapLibreMap, Marker, NavigationControl, type StyleSpecification } from "maplibre-gl";
 import type { Facility, SearchFilters } from "@/types/facility";
 import { getOwnershipColor } from "@/lib/utils";
 
@@ -111,9 +111,9 @@ export function FacilityMap({
                               onFilterToggle
                             }: FacilityMapProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
-  const mapRef = useRef<maplibregl.Map | null>(null);
-  const markersRef = useRef<Map<string, maplibregl.Marker>>(new Map());
-  const userMarkerRef = useRef<maplibregl.Marker | null>(null);
+  const mapRef = useRef<MapLibreMap | null>(null);
+  const markersRef = useRef<Map<string, Marker>>(new Map());
+  const userMarkerRef = useRef<Marker | null>(null);
   const resizeObserverRef = useRef<ResizeObserver | null>(null);
   const prevCenterRef = useRef<{ lat: number; lng: number } | null>(null);
   const prevUserMarkerKeyRef = useRef<string>("");
@@ -177,7 +177,7 @@ export function FacilityMap({
   useEffect(() => {
     if (!mapContainer.current || mapRef.current) return;
 
-    const map = new maplibregl.Map({
+    const map = new MapLibreMap({
       container: mapContainer.current,
       style: MAP_STYLE,
       center: [centerLongitude, centerLatitude],
@@ -206,7 +206,7 @@ export function FacilityMap({
     }, "bottom-right");
 
     if (window.innerWidth >= 1024) {
-      map.addControl(new maplibregl.NavigationControl({showCompass: false, visualizePitch: false}), "bottom-right");
+      map.addControl(new NavigationControl({showCompass: false, visualizePitch: false}), "bottom-right");
     }
 
     // Position the bottom-right panel and item gaps via JS
@@ -295,7 +295,7 @@ export function FacilityMap({
 
       const {el, render} = createPinElement(f);
 
-      const marker = new maplibregl.Marker({element: el, anchor: "bottom"})
+      const marker = new Marker({element: el, anchor: "bottom"})
         .setLngLat([lng, lat])
         .addTo(mapRef.current!);
 
@@ -344,7 +344,7 @@ export function FacilityMap({
           </div>
         </div>
       );
-      const userMarker = new maplibregl.Marker({element: userEl, anchor: "bottom", draggable: true})
+      const userMarker = new Marker({element: userEl, anchor: "bottom", draggable: true})
         .setLngLat([centerLongitude, centerLatitude])
         .addTo(mapRef.current);
       userMarker.on("dragend", () => {
