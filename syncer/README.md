@@ -85,7 +85,7 @@ docker run \
 | Източник                             | Тип      | URL                                                                                                                                 |
 |--------------------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------|
 | Общински детски градини              | REST API | `https://kg.sofia.bg/api/public/kg/type/kinderGarden/all?filterType=by_region&kgType=0&regionId=0`                                  |
-| Лицензирани частни ясли (СРЗИ)       | PDF файл | `https://kg.sofia.bg/api/public/file/91f643b4bd6a4b179aaec3de09d028af` · [Източник](https://kg.sofia.bg/#/manual)                   |
+| Лицензирани частни ясли (СРЗИ)       | PDF файл | `https://kg.sofia.bg/api/public/file/99c25e1365684262ba9ebe720bb3bad2` · [Източник](https://kg.sofia.bg/#/manual)                   |
 | Частни детски градини (МОН регистър) | REST API | [`/public-register`](https://ri-api.mon.bg/data/get/public-register) + [`/institution`](https://ri-api.mon.bg/data/get/institution) |
 
 API-то на МОН използва POST заявки:

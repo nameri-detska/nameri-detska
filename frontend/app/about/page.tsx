@@ -186,12 +186,12 @@ export default function AboutPage() {
                 </h3>
               </div>
               <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-2">
-                Списък на частните детски ясли, регистрирани от СРЗИ (към 08.06.2026 г.). Публикува се в ИСОДЗ в секция
+                Списък на частните детски ясли, регистрирани от СРЗИ (към 17.08.2026 г.). Публикува се в ИСОДЗ в секция
                 &quot;Ръководство на потребителя&quot;.
               </p>
               <div className="space-y-1">
                 <a
-                  href="https://kg.sofia.bg/api/public/file/91f643b4bd6a4b179aaec3de09d028af"
+                  href="https://kg.sofia.bg/api/public/file/99c25e1365684262ba9ebe720bb3bad2"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-block text-xs text-[var(--accent)] hover:underline break-all"
