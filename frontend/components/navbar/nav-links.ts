@@ -5,5 +5,6 @@ export interface NavLink {
 }
 
 export const NAV_LINKS: NavLink[] = [
+  {href: "/map", label: "Карта"},
   {href: "/about", label: "За проекта"},
 ];
